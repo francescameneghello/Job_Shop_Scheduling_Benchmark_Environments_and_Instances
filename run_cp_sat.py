@@ -38,8 +38,8 @@ def run_method(folder, exp_name, **kwargs):
         jobShopEnv, results = FJSPSDSTmodel.update_env(jobShopEnv, vars, solver, status, solution_count, kwargs["solver"]["time_limit"])
     elif 'fjsp' in str(kwargs['instance']['problem_instance']):
         jobShopEnv, results = FJSPmodel.update_env(jobShopEnv, vars, solver, status, solution_count, kwargs["solver"]["time_limit"])
-    elif 'fsp' or 'jsp' in str(kwargs['instance']['problem_instance']):
-        jobShopEnv, results = JSPmodel.update_env(jobShopEnv, vars, solver, status, solution_count, kwargs["solver"]["time_limit"])
+    elif 'jsp' in str(kwargs['instance']['problem_instance']):
+        jobShopEnv = JSPmodel.update_env(jobShopEnv, vars, solver, status, solution_count, kwargs["solver"]["time_limit"])
 
     # Plot the ganttchart of the solution
     if kwargs['output']['plotting']:
@@ -54,8 +54,10 @@ def run_method(folder, exp_name, **kwargs):
     file_path = os.path.join(dir_path, "CP_results.json")
 
     # Save results to JSON (will create or overwrite the file)
-    with open(file_path, "w") as outfile:
-        json.dump(results, outfile, indent=4)
+    #with open(file_path, "w") as outfile:
+    #    print(file_path)
+    #    json.dump(results, outfile, indent=4)
+
 
 
 def main(param_file=PARAM_FILE):

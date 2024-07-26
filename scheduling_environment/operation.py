@@ -10,12 +10,22 @@ class Operation:
         self._processing_times = OrderedDict()
         self._predecessors: List = []
         self._scheduling_information = {}
+        self._simulation_parameters = None
 
     def reset(self):
         self._scheduling_information = {}
 
     def __str__(self):
         return f"Job {self.job_id}, Operation {self.operation_id}"
+
+    @property
+    def simulation_parameters(self):
+        """Return the standard deviation of the operation."""
+        return self._simulation_parameters
+
+    def set_simulation_parameters(self, mean, std) -> None:
+        """Add a list of predecessor operations to the current operation."""
+        self._simulation_parameters = [mean, std]
 
     @property
     def job(self):

@@ -1,3 +1,4 @@
+import math
 import re
 from pathlib import Path
 
@@ -5,6 +6,7 @@ from scheduling_environment.job import Job
 from scheduling_environment.machine import Machine
 from scheduling_environment.operation import Operation
 
+import numpy as np
 
 def parse(JobShop, instance, from_absolute_path=False):
     if not from_absolute_path:
@@ -34,13 +36,18 @@ def parse(JobShop, instance, from_absolute_path=False):
             i = 0
 
             job = Job(job_id)
-
             while i < len(parsed_line):
                 # Current operation
                 operation = Operation(job, job_id, operation_id)
                 operation_options = 1
                 for operation_option_id in range(operation_options):
-                    operation.add_operation_option(int(parsed_line[i]), int(parsed_line[i + 1]))
+                    mean = int(parsed_line[i + 1])
+                    std = np.random.uniform(0,0.1*mean,1)[0]
+                    q = 1.645/(math.sqrt(20))
+                    duration = int(mean + q*std)
+                    #operation.add_operation_option(int(parsed_line[i]), int(parsed_line[i + 1]))
+                    operation.add_operation_option(int(parsed_line[i]), duration)
+                    operation.set_simulation_parameters(mean, std)
                 job.add_operation(operation)
                 JobShop.add_operation(operation)
                 if i != 0:
